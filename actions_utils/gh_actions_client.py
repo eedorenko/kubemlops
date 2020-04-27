@@ -31,6 +31,8 @@ def get_gh_actions_client():
 
 if __name__ == "__main__":
     
+    
+    
     repo = "kaizentm/kubemlops"
     client = GhActionsClient(repo, pat)
     client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
