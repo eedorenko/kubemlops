@@ -6,9 +6,9 @@ from gh_actions_client import get_gh_actions_client
 class EventDispatcher:
 
     REGISTER_MODEL_EVENT = "Model is registered"
-    MODEL_REGISTRATION_COMMENT = "Model {model_name} has been registered \
-                                  at the [model registry](microsoft.com) \
-                                  with the following metrics {metrics}"
+    MODEL_REGISTRATION_COMMENT = "Model **{model_name}** has been registered \
+                                  at the [Model Registry ](http://microsoft.com) \
+                                  with the following metrics **{metrics}**"
 
     def __init__(self, event_payload_file):
         with open(event_payload_file, 'r') as f:
