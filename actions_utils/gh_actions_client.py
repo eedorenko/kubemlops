@@ -27,10 +27,12 @@ class GhActionsClient:
         print(response)
         
 def get_gh_actions_client():
+    print("GITHUB_REPOSITORY")
+    print(os.getenv("GITHUB_REPOSITORY"))
     return GhActionsClient(os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY"))
 
 if __name__ == "__main__":
-    
+    pat = "b680206048f8aa28e045c9674b3b8029931b770b"
     repo = "kaizentm/kubemlops"
     client = GhActionsClient(repo, pat)
     client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
