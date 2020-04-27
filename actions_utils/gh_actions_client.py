@@ -27,7 +27,7 @@ class GhActionsClient:
         print(response)
         
 def get_gh_actions_client():
-    return GhActionsClient(os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY"))
+    return GhActionsClient(os.getenv("GITHUB_REPOSITORY"), os.getenv("GITHUB_TOKEN"))
 
 if __name__ == "__main__":
     
