@@ -13,17 +13,16 @@ class EventDispatcher:
     def __init__(self, event_payload_file):
         with open(event_payload_file, 'r') as f:
             raw_payload = json.load(f)
+        
             print("Payload")
             print(raw_payload)
-            self.event_payload = eval(raw_payload['action'])
-            print("Payload")
-            print(self.event_payload)
-        
-        self.event_type = self.event_payload['event_type']
-        if ('client_payload' in self.event_payload):
-            self.event_client_payload = self.event_payload['client_payload']
-        else:
-            self.event_client_payload = None
+            
+            self.event_type = raw_payload['action']    
+
+            if ('client_payload' in raw_payload):
+                self.event_client_payload = raw_payload['client_payload']
+            else:
+                self.event_client_payload = None
 
     def add_comment(self, comment):        
         if ('pr_num' in self.event_client_payload):
