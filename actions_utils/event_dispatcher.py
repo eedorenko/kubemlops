@@ -33,7 +33,7 @@ class EventDispatcher:
     # TODO: Fetch params from MLFlow
     def get_model_params(self):
         return {'model_name': 'Mexican Food', 
-                'metrics': 'Spice level:10.0'}
+                'metrics': 'Spicy level:10.0'}
 
     def handle_model_regsitered(self):        
         model_params = self.get_model_params() 
