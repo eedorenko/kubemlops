@@ -12,7 +12,7 @@ jobs:
     - name: handle repo dispatch payload
       id: rd
       run: |
-        python3 action_utils/event_dispatcher.py
+        python3 actions_utils/event_dispatcher.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # GITHUB_EVENT_PATH: ${{ GITHUB_EVENT_PATH }}
