@@ -55,8 +55,8 @@ class DispatchEventHandler:
         comment = self.MODEL_REGISTRATION_COMMENT.format(model_name=model_params['model_name'],
                                                   metrics=model_params['metrics'])
         self.add_comment(comment)
-        self.add_label(MODEL_REGISTRATION_LABEL)
-        self.fire_event(DEPLOY_EVENT)        
+        self.add_label(self.MODEL_REGISTRATION_LABEL)
+        self.fire_event(self.DEPLOY_EVENT)        
  
     def dispatch(self):
         if (self.REGISTER_MODEL_EVENT==self.event_type):
