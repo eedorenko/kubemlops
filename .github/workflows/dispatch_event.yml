@@ -1,6 +1,5 @@
 name: Receive Repository Dispatch Payload
 on: repository_dispatch
-    types: [Model Registered]
 
 jobs:
   process-repository-dispatch:
