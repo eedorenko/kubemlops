@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bot
-        image: eugenefedorenko/kubemlopsbot:latest
+        image: kubeflowyoacr.azurecr.io/kubemlopsbot:latest
         env:
         - name: GITHUB_TOKEN
           valueFrom:

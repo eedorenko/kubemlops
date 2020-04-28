@@ -30,82 +30,94 @@ def tacosandburritos_train(
 
     # preprocess data
 
-    operations['preprocess'] = dsl.ContainerOp(
-        name='preprocess',
-        image=image_repo_name + '/preprocess:latest',
-        command=['python'],
-        arguments=[
-            '/scripts/data.py',
-            '--base_path', persistent_volume_path,
-            '--data', training_folder,
-            '--target', training_dataset,
-            '--img_size', image_size,
-            '--zipfile', data_download
-        ]
-    )
+    # operations['preprocess'] = dsl.ContainerOp(
+    #     name='preprocess',
+    #     image=image_repo_name + '/preprocess:latest',
+    #     command=['python'],
+    #     arguments=[
+    #         '/scripts/data.py',
+    #         '--base_path', persistent_volume_path,
+    #         '--data', training_folder,
+    #         '--target', training_dataset,
+    #         '--img_size', image_size,
+    #         '--zipfile', data_download
+    #     ]
+    # )
 
-    # train
-    operations['training'] = dsl.ContainerOp(
-        name='training',
-        image=image_repo_name + '/training:latest',
-        command=['python'],
-        arguments=[
-            '/scripts/train.py',
-            '--base_path', persistent_volume_path,
-            '--data', training_folder,
-            '--epochs', epochs,
-            '--batch', batch,
-            '--image_size', image_size,
-            '--lr', learning_rate,
-            '--outputs', model_folder,
-            '--dataset', training_dataset
-        ]
-    )
-    operations['training'].after(operations['preprocess'])
+    # # train
+    # operations['training'] = dsl.ContainerOp(
+    #     name='training',
+    #     image=image_repo_name + '/training:latest',
+    #     command=['python'],
+    #     arguments=[
+    #         '/scripts/train.py',
+    #         '--base_path', persistent_volume_path,
+    #         '--data', training_folder,
+    #         '--epochs', epochs,
+    #         '--batch', batch,
+    #         '--image_size', image_size,
+    #         '--lr', learning_rate,
+    #         '--outputs', model_folder,
+    #         '--dataset', training_dataset
+    #     ]
+    # )
+    # operations['training'].after(operations['preprocess'])
 
-    # register model
-    operations['register'] = dsl.ContainerOp(
-        name='register',
-        image=image_repo_name + '/register:latest',
-        command=['python'],
-        arguments=[
-            '/scripts/register.py',
-            '--base_path', persistent_volume_path,
-            '--model', 'latest.h5',
-            '--model_name', model_name,
-            '--tenant_id', "$(AZ_TENANT_ID)",
-            '--service_principal_id', "$(AZ_CLIENT_ID)",
-            '--service_principal_password', "$(AZ_CLIENT_SECRET)",
-            '--subscription_id', "$(AZ_SUBSCRIPTION_ID)",
-            '--resource_group', resource_group,
-            '--workspace', workspace,
-            '--run_id', dsl.RUN_ID_PLACEHOLDER
-        ]
-    ).apply(use_azure_secret())
+    # # register model
+    # operations['register'] = dsl.ContainerOp(
+    #     name='register',
+    #     image=image_repo_name + '/register:latest',
+    #     command=['python'],
+    #     arguments=[
+    #         '/scripts/register.py',
+    #         '--base_path', persistent_volume_path,
+    #         '--model', 'latest.h5',
+    #         '--model_name', model_name,
+    #         '--tenant_id', "$(AZ_TENANT_ID)",
+    #         '--service_principal_id', "$(AZ_CLIENT_ID)",
+    #         '--service_principal_password', "$(AZ_CLIENT_SECRET)",
+    #         '--subscription_id', "$(AZ_SUBSCRIPTION_ID)",
+    #         '--resource_group', resource_group,
+    #         '--workspace', workspace,
+    #         '--run_id', dsl.RUN_ID_PLACEHOLDER
+    #     ]
+    # ).apply(use_azure_secret())
 
-    operations['register'].after(operations['training'])
+    # operations['register'].after(operations['training'])
 
-    operations['deploy'] = dsl.ContainerOp(
-        name='deploy',
-        image=image_repo_name + '/deploy:latest',
-        command=['sh'],
+    operations['finalize'] = dsl.ContainerOp(
+        name='finalize',
+        image="curlimages/curl",
+        command=['curl'],
         arguments=[
-            '/scripts/deploy.sh',
-            '-n', model_name,
-            '-m', model_name,
-            '-i', '/scripts/inferenceconfig.json',
-            '-d', '/scripts/deploymentconfig.json',
-            '-t', "$(AZ_TENANT_ID)",
-            '-r', resource_group,
-            '-w', workspace,
-            '-s', "$(AZ_CLIENT_ID)",
-            '-p', "$(AZ_CLIENT_SECRET)",
-            '-u', "$(AZ_SUBSCRIPTION_ID)",
-            '-b', persistent_volume_path,
-            '-x', dsl.RUN_ID_PLACEHOLDER
+            '-H "Content-Type: application/json"',
+            '-d', '{"event_type": "Model is registered", "sha": "sha", "pr_num": "1"}',
+            'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
         ]
     ).apply(use_azure_secret())
-    operations['deploy'].after(operations['register'])
+    
+
+    # operations['deploy'] = dsl.ContainerOp(
+    #     name='deploy',
+    #     image=image_repo_name + '/deploy:latest',
+    #     command=['sh'],
+    #     arguments=[
+    #         '/scripts/deploy.sh',
+    #         '-n', model_name,
+    #         '-m', model_name,
+    #         '-i', '/scripts/inferenceconfig.json',
+    #         '-d', '/scripts/deploymentconfig.json',
+    #         '-t', "$(AZ_TENANT_ID)",
+    #         '-r', resource_group,
+    #         '-w', workspace,
+    #         '-s', "$(AZ_CLIENT_ID)",
+    #         '-p', "$(AZ_CLIENT_SECRET)",
+    #         '-u', "$(AZ_SUBSCRIPTION_ID)",
+    #         '-b', persistent_volume_path,
+    #         '-x', dsl.RUN_ID_PLACEHOLDER
+    #     ]
+    # ).apply(use_azure_secret())
+    # operations['deploy'].after(operations['register'])
 
     for _, op_1 in operations.items():
         op_1.container.set_image_pull_policy("Always")
