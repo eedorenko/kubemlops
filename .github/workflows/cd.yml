@@ -1,8 +1,8 @@
 name: CD
-on: 
+on:
   repository_dispatch:
-    types: [model]
-
+    types: [Model is registered]
+    
 jobs:
   deploy_to_qa:
     runs-on: ubuntu-latest
