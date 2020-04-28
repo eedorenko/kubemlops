@@ -5,11 +5,6 @@ from gh_actions_client import get_gh_actions_client
 
 class DispatchEventHandler:
 
-    MODEL_REGISTRATION_COMMENT = "Model **{model_name}** has been registered \
-                                  at the [Model Registry ](http://microsoft.com) \
-                                  with the following metrics **{metrics}**"
-    MODEL_REGISTRATION_LABEL = "Model Registered"                                  
-
     def __init__(self):
         event_payload_file = os.getenv('GITHUB_EVENT_PATH')
         with open(event_payload_file, 'r') as f:
@@ -44,20 +39,8 @@ class DispatchEventHandler:
     def fire_event(self, event):        
         get_gh_actions_client().send_dispatch_event(self.sha, self.pr_num, event)
 
-    # TODO: Fetch params from MLFlow
-    def get_model_params(self):
-        return {'model_name': 'Mexican Food', 
-                'metrics': 'Spicy level:10.0'}
-
  
     def dispatch(self):
-        model_params = self.get_model_params() 
-        comment = self.MODEL_REGISTRATION_COMMENT.format(model_name=model_params['model_name'],
-                                                  metrics=model_params['metrics'])
-        self.add_comment(comment)
-        self.add_label(self.MODEL_REGISTRATION_LABEL)
+        if (self.pr_num):
+            self.add_comment(self.event_type)
 
-
-if __name__ == "__main__":
-    event_dispatcher = DispatchEventHandler()
-    event_dispatcher.dispatch() 

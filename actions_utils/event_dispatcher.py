@@ -1,12 +1,15 @@
 import argparse
 import dispatch_event_handler
+import reg_model_event_handler
 
 REGISTER_MODEL_EVENT = "Model is registered"
 
 
 def get_event_handler(event_type):
     if (event_type == REGISTER_MODEL_EVENT):
-        return  dispatch_event_handler.DispatchEventHandler()
+        return reg_model_event_handler.RegModelEventHandler()
+    else:
+        return dispatch_event_handler.DispatchEventHandler()
 
 
 if __name__ == "__main__":
