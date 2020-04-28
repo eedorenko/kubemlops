@@ -1,6 +1,8 @@
 import os
 import requests
 
+pat = "ed90df12d9d28f036e244d3505785a66dc9214ac"
+repo = "eedorenko/kubemlops"
 
 
 class GhActionsClient:
