@@ -1,5 +1,6 @@
 name: CD
-on: repository_dispatch:
+on: 
+  repository_dispatch:
     types: [model]
 
 jobs:
