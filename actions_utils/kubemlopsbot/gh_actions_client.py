@@ -1,6 +1,8 @@
 import os
 import requests
 
+
+
 class GhActionsClient:
 
     def __init__(self, repo, pat):
@@ -11,10 +13,9 @@ class GhActionsClient:
         self.headers = {'authorization': f'token {self.personal_access_token}',
                    'accept': 'application/vnd.github.everest-preview+json'}
 
-    def send_dispatch_event(self, sha, pr_num, phase):
-        url = self.base_url + "/dispatches"
-        payload = {'sha': sha, 'pr_num': pr_num}
-        data = {'event_type': phase, 'client_payload': payload}
+    def send_dispatch_event(self, event_type, client_payload):
+        url = self.base_url + "/dispatches"        
+        data = {'event_type': event_type, 'client_payload': client_payload}
         response = requests.post(url=url, headers=self.headers, json=data)
         assert response.status_code == 204
         print(response)
@@ -38,11 +39,10 @@ def get_gh_actions_client():
     return GhActionsClient(os.getenv("GITHUB_REPOSITORY"), os.getenv("GITHUB_TOKEN"))
 
 if __name__ == "__main__":
-    
-    repo = "kaizentm/kubemlops"
     client = GhActionsClient(repo, pat)
-    client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
-    # client.add_comment(pr_num="6", comment="Hello from Client")
+    #payload = {'sha': sha, 'pr_num': pr_num}
+    #client.send_dispatch_event(sha="", pr_num="1", phase="Model is registered")
+    #client.add_comment(pr_num="1", comment="Hello from Client")
     #client.add_labels(pr_num="6", labels=["model registered"])
 
 

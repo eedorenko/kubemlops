@@ -1,6 +1,6 @@
 import os
 import json
-from gh_actions_client import get_gh_actions_client
+from kubemlopsbot.gh_actions_client import get_gh_actions_client
 
 
 class DispatchEventHandler:
