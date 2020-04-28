@@ -25,18 +25,25 @@ class GhActionsClient:
         response = requests.post(url=url, headers=self.headers, json=data)
         assert response.status_code == 201
         print(response)
+
+    def add_labels(self, pr_num, labels):
+        url = self.base_url + "/issues/{pr_num}/labels".format(pr_num=pr_num)        
+        data = {'labels': labels}
+        response = requests.post(url=url, headers=self.headers, json=data)
+        assert response.status_code == 200
+        print(response)
+
         
 def get_gh_actions_client():
     return GhActionsClient(os.getenv("GITHUB_REPOSITORY"), os.getenv("GITHUB_TOKEN"))
 
 if __name__ == "__main__":
     
-    
-    
     repo = "kaizentm/kubemlops"
     client = GhActionsClient(repo, pat)
-    client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
+    #client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
     # client.add_comment(pr_num="6", comment="Hello from Client")
+    client.add_labels(pr_num="6", labels=["model registered"])
 
 
 
