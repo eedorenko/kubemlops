@@ -43,7 +43,7 @@ class DispatchEventHandler:
         get_gh_actions_client().add_labels(self.pr_num, [label])
 
     def fire_event(self, event):        
-        get_gh_actions_client().send_dispatch_event(self, self.sha, self.pr_num, event):
+        get_gh_actions_client().send_dispatch_event(self.sha, self.pr_num, event)
 
     # TODO: Fetch params from MLFlow
     def get_model_params(self):
@@ -56,7 +56,7 @@ class DispatchEventHandler:
                                                   metrics=model_params['metrics'])
         self.add_comment(comment)
         self.add_label(MODEL_REGISTRATION_LABEL)
-        self.fire_event(self, DEPLOY_EVENT):        
+        self.fire_event(DEPLOY_EVENT)        
  
     def dispatch(self):
         if (self.REGISTER_MODEL_EVENT==self.event_type):
