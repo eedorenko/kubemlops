@@ -41,9 +41,9 @@ if __name__ == "__main__":
     
     repo = "kaizentm/kubemlops"
     client = GhActionsClient(repo, pat)
-    #client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
+    client.send_dispatch_event(sha="", pr_num="6", phase="Model is registered")
     # client.add_comment(pr_num="6", comment="Hello from Client")
-    client.add_labels(pr_num="6", labels=["model registered"])
+    #client.add_labels(pr_num="6", labels=["model registered"])
 
 
 
