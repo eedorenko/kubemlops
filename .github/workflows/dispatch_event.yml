@@ -1,0 +1,19 @@
+name: Receive Repository Dispatch Payload
+on: repository_dispatch
+
+jobs:
+  process-repository-dispatch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Copy Repository Contents
+      uses: actions/checkout@master
+      with:
+        ref: eedorenko/cd
+    
+    - name: Handle Repo Dispatch Payload
+      id: rd
+      run: |
+        python3 actions_utils/event_dispatcher.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

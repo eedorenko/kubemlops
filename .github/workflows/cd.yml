@@ -1,0 +1,15 @@
+name: CD
+on: repository_dispatch
+  types: [Model Registered]
+
+jobs:
+  deploy_to_qa:
+    runs-on: ubuntu-latest
+
+    steps:    
+    - name: Deploy
+      id: rd
+      run: |
+        echo "Deployment to QA"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
