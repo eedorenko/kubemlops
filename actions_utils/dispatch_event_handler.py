@@ -39,7 +39,7 @@ class DispatchEventHandler:
         if (self.pr_num):
             get_gh_actions_client().add_labels(self.pr_num, [label])
     
-    def add_label(self, name, title, summary, text):
+    def create_check_run(self, name, title, summary, text):
         if (self.sha):
             get_gh_actions_client().create_check_run(self.sha,"in_progress", name, title, summary, text)
  

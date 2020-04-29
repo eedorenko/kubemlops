@@ -1,7 +1,7 @@
 import os
 import requests
 
-
+pat = "dd2f179afa5a7a132d2450e1ec32e20a8781b53b"
 repo = "eedorenko/kubemlops"
 
 
