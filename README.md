@@ -4,4 +4,4 @@ The repo contains a sample that serves as a template for doing MLOps with open s
 It implements a single ML use case including all parts of the picture such as DataOps for ML, ML Fundamentals, Observability and DevOps for ML.
 
 -----
-
+-----
