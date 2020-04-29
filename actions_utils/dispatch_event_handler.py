@@ -41,7 +41,12 @@ class DispatchEventHandler:
     
     def create_check_run(self, name, title, summary, text):
         if (self.sha):
-            get_gh_actions_client().create_check_run(self.sha,"in_progress", name, title, summary, text)
+            get_gh_actions_client().create_check_run(self.sha, name, title, summary, text)
+
+    def close_check_run(self, conclusion):
+        if (self.sha):
+            get_gh_actions_client().close_check_run(self.sha, conclusion)
+
  
     def dispatch(self):
         self.add_comment(self.event_type)

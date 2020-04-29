@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 
 
 repo = "eedorenko/kubemlops"
@@ -37,12 +38,25 @@ class GhActionsClient:
         assert response.status_code == 200
         print(response)
 
-    def create_check_run(self, sha, status, name, title, summary, text):
+    def create_check_run(self, sha, name, title, summary, text):
         url = self.base_url + "/check-runs"
         data = {
             'name': f'{name}',
             'head_sha': f'{sha}',
-            'status': f'{status}',
+            'status': 'in_progress',
+        }
+        print(data)    
+        response = requests.post(url=url, headers=self.headers, json=data)
+        assert response.status_code == 201
+        print(response)
+
+    def close_check_run(self, sha, conclustion):
+        url = self.base_url + "/check-runs"
+        data = {
+            'conclusion': f'{conclustion}',
+            'head_sha': f'{sha}',
+            'status': 'completed',
+            'completed_at': f'{datetime.now().isoformat()}'
         }
         print(data)    
         response = requests.post(url=url, headers=self.headers, json=data)
@@ -60,7 +74,7 @@ if __name__ == "__main__":
     #client.send_dispatch_event("Model is registered",{'sha': 'sha', 'pr_num': 1})
     #client.add_comment(pr_num="1", comment="Hello from Client")
     #client.add_labels(pr_num="6", labels=["model registered"])
-    client.create_check_run("d8f5793cf574b9087ece72c30dc1219d73d8d25a","in_progress", "naaame", "title", "summary", "text")
+    client.create_check_run("d8f5793cf574b9087ece72c30dc1219d73d8d25a", "naaame", "title", "summary", "text")
 
 
 b'{"message":"You must authenticate via a GitHub App.","documentation_url":"https://developer.github.com/v3/checks/runs/#create-a-check-run"}'
