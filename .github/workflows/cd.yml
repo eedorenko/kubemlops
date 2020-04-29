@@ -25,8 +25,8 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |          
-          cd $GITHUB_WORKSPACE/code/deploy
-          ./deploy.sh -m tacosandburritos \
+          # cd $GITHUB_WORKSPACE/code/deploy
+          $GITHUB_WORKSPACE/code/deploy/deploy.sh -m tacosandburritos \
                     -u ${{ secrets.SUBSCRIPTION_ID }} \
                     -r ${{ secrets.RESOURCE_GROUP }} \
                     -w ${{ secrets.AML_WORKSPACE }} \

@@ -31,17 +31,14 @@ class DispatchEventHandler:
             else:
                 self.event_client_payload = None
 
-    def add_comment(self, comment):        
-        get_gh_actions_client().add_comment(self.pr_num, comment)
+    def add_comment(self, comment):                
+        if (self.pr_num):
+            get_gh_actions_client().add_comment(self.pr_num, comment)
 
     def add_label(self, label):        
-        get_gh_actions_client().add_labels(self.pr_num, [label])
-
-    def fire_event(self, event):        
-        get_gh_actions_client().send_dispatch_event(self.sha, self.pr_num, event)
-
+        if (self.pr_num):
+            get_gh_actions_client().add_labels(self.pr_num, [label])
  
     def dispatch(self):
-        if (self.pr_num):
-            self.add_comment(self.event_type)
+        self.add_comment(self.event_type)
 
