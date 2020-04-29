@@ -34,7 +34,7 @@ def tacosandburritos_train(
          command=['env']
     )
     
-    with ExitHandler(exit_op):
+    with dsl.ExitHandler(exit_op):
         operations['preprocess'] = dsl.ContainerOp(
             name='operation',
             image="busybox",
