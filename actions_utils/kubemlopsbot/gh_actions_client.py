@@ -60,8 +60,9 @@ class GhActionsClient:
         }
         print(data)    
         response = requests.post(url=url, headers=self.headers, json=data)
+        print(response.content)
         assert response.status_code == 201
-        print(response)
+        
 
 
         
@@ -77,5 +78,4 @@ if __name__ == "__main__":
     client.create_check_run("d8f5793cf574b9087ece72c30dc1219d73d8d25a", "naaame", "title", "summary", "text")
 
 
-b'{"message":"You must authenticate via a GitHub App.","documentation_url":"https://developer.github.com/v3/checks/runs/#create-a-check-run"}'
 
