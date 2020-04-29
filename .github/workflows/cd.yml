@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Deploy
       id: deploy
-      uses: actions/deploy
+      uses: ./.github/actions/deploy
       with:
         model_name: 'tacosandburritos'
         tenant_id: ${{ secrets.TENANT }}
