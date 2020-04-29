@@ -15,7 +15,7 @@ import os
 def get_bot_payload(event_type):
     payload = {}
     payload['event_type'] = event_type
-    payload['sha'] = os.getenv('SHA')
+    payload['sha'] = os.getenv('GITHUB_SHA')
     payload['pr_num'] = os.getenv('PR_NUM')
     payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
     return json.dumps(payload)
