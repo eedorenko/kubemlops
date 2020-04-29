@@ -6,12 +6,8 @@ on:
 jobs:
   deploy_to_qa:
     runs-on: ubuntu-latest
-    # container: eugenefedorenko/mldeploy 
 
     steps:    
-    # - name: Deploy
-    #   run: |
-    #     sh /scripts/deploy.sh
     - name: Checkout
       uses: actions/checkout@v2
     - name: Azure Login

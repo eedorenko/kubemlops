@@ -28,6 +28,19 @@ def tacosandburritos_train(
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
 
+    exit_op = dsl.ContainerOp(
+         name='Exit Handler',
+         image="busybox",
+         command=['env']
+    )
+    
+    with ExitHandler(exit_op):
+        operations['preprocess'] = dsl.ContainerOp(
+            name='operation',
+            image="busybox",
+            command=['echo "Hello"']
+            )
+
     # preprocess data
 
     # operations['preprocess'] = dsl.ContainerOp(
@@ -85,16 +98,16 @@ def tacosandburritos_train(
 
     # operations['register'].after(operations['training'])
 
-    operations['finalize'] = dsl.ContainerOp(
-        name='finalize',
-        image="curlimages/curl",
-        command=['curl'],
-        arguments=[
-            '-H "Content-Type: application/json"',
-            '-d', '{"event_type": "Model is registered", "sha": "sha", "pr_num": "1"}',
-            'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
-        ]
-    ).apply(use_azure_secret())
+    # operations['finalize'] = dsl.ContainerOp(
+    #     name='finalize',
+    #     image="curlimages/curl",
+    #     command=['curl'],
+    #     arguments=[
+    #         '-H "Content-Type: application/json"',
+    #         '-d', '{"event_type": "Model is registered", "sha": "sha", "pr_num": "1"}',
+    #         'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
+    #     ]
+    # )
     
 
     # operations['deploy'] = dsl.ContainerOp(
