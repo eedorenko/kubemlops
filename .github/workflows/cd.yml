@@ -24,7 +24,7 @@ jobs:
         inlineScript: |
           az extension add -n azure-cli-ml
           ls -ltr
-          ./$GITHUB_WORKSPACE/code/deploy/deploy.sh
+          $GITHUB_WORKSPACE/code/deploy/deploy.sh
           
     # - name: Checkout
     #   uses: actions/checkout@v2
