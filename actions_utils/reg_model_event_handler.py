@@ -23,7 +23,7 @@ class RegModelEventHandler(DispatchEventHandler):
         #                                           metrics=model_params['metrics'])
         # self.add_comment(comment)
         # self.add_label(self.MODEL_REGISTRATION_LABEL)
-        # self.create_check_run("naaame", "title", "summary", "text")
-        self.close_check_run("naaame","success")
+        self.create_check_run("naaame", "title", "summary", "text")
+        # self.close_check_run("naaame","success")
 
 
