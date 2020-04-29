@@ -12,7 +12,8 @@ jobs:
     # - name: Deploy
     #   run: |
     #     sh /scripts/deploy.sh
-
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Azure Login
       uses: azure/login@v1
       with:
@@ -22,9 +23,8 @@ jobs:
       with:
         inlineScript: |
           az extension add -n azure-cli-ml
-          az ml -h
-          az acr login --name kubeflowyoacr
-    # - name: Checkout
+          deploy.sh 
+\    # - name: Checkout
     #   uses: actions/checkout@v2
     # - name: Deploy
     #   id: deploy
