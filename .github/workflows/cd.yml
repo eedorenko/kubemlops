@@ -6,8 +6,13 @@ on:
 jobs:
   deploy_to_qa:
     runs-on: ubuntu-latest
+    container: eugenefedorenko/mldeploy 
 
     steps:    
+    - name: Deploy
+      run: |
+        sh /scripts/deploy.sh
+
     # - name: Azure Login
     #   uses: azure/login@v1
     #   with:
@@ -17,17 +22,19 @@ jobs:
     #   with:
     #     inlineScript: |
     #       az acr login --name kubeflowyoacr
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Deploy
-      id: deploy
-      uses: ./.github/actions/deploy
-      with:
-        model_name: 'tacosandburritos'
-        tenant_id: ${{ secrets.TENANT }}
-        service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
-        service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
-        subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
-        resource_group:  ${{ secrets.RESOURCE_GROUP }}
-        workspace:  ${{ secrets.AML_WORKSPACE }}
-        run_id: 1
+    # - name: Checkout
+    #   uses: actions/checkout@v2
+    # - name: Deploy
+    #   id: deploy
+    #   uses: ./.github/actions/deploy
+    #   with:
+    #     model_name: 'tacosandburritos'
+    #     tenant_id: ${{ secrets.TENANT }}
+    #     service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
+    #     service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
+    #     subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+    #     resource_group:  ${{ secrets.RESOURCE_GROUP }}
+    #     workspace:  ${{ secrets.AML_WORKSPACE }}
+    #     run_id: 1
+
+      
