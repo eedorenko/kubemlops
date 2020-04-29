@@ -31,7 +31,7 @@ def tacosandburritos_train(
     exit_op = dsl.ContainerOp(
          name='Exit Handler',
          image="busybox",
-         command=['env']
+         command=['echo {{workflow.status}}']
     )
     
     with dsl.ExitHandler(exit_op):
