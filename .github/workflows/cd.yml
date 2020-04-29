@@ -17,8 +17,8 @@ jobs:
     #   with:
     #     inlineScript: |
     #       az acr login --name kubeflowyoacr
-    # - name: Checkout
-    #   uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Deploy
       id: deploy
       uses: ./.github/actions/deploy
