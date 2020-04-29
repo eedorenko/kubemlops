@@ -8,10 +8,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
+    - name: Checkout
+        uses: actions/checkout@v2
     - name: Deploy
-      id: rd
-      run: |
-        echo "Deployment to QA"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- 
+      id: deploy
+      uses: actions/deploy
+      with:
+        model_name: 'tacosandburritos'
+        tenant_id: ${{ secrets.TENANT }}
+        service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
+        service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
+        subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+        resource_group:  ${{ secrets.RESOURCE_GROUP }}
+        workspace:  ${{ secrets.AML_WORKSPACE }}
+        run_id: 1

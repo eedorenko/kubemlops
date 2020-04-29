@@ -1,0 +1,38 @@
+name: 'Deploy'
+inputs:
+  model_name: 
+    description: 'Model Name'
+    required: true
+  tenant_id: 
+    description: 'Tenant Id'
+    required: true
+  service_principal_id: 
+    description: 'Service Principal Id'
+    required: true
+  service_principal_pwd: 
+    description: 'Service Principal Pwd'
+    required: true
+  subscription_id: 
+    description: 'Subscription Id'
+    required: true
+  resource_group: 
+    description: 'Resource Group'
+    required: true
+  workspace: 
+    description: 'Workspace'
+    required: true
+  run_id: 
+    description: 'Run Id'
+    required: true
+runs:
+  using: 'docker'
+  image: 'kubeflowyoacr.azurecr.io/mexicanfood/deploy:latest'
+  args:
+    - ${{ inputs.model_name }}
+    - ${{ inputs.tenant_id }}
+    - ${{ inputs.service_principal_id }}
+    - ${{ inputs.service_principal_pwd }}
+    - ${{ inputs.subscription_id }}
+    - ${{ inputs.resource_group }}
+    - ${{ inputs.workspace }}
+    - ${{ inputs.run_id }}
