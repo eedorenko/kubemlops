@@ -28,7 +28,7 @@ def tacosandburritos_train(
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
     kubemlopsbot_svc = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
-    kubemlopsbot_payload = '{"event_type": {event}, "sha": "sha", \
+    kubemlopsbot_payload = '{"event_type": {}, "sha": "sha", \
                             "pr_num": "pr_num", "run_id": "{{workflow.uid}}" }'
 
     exit_op = dsl.ContainerOp(
@@ -37,7 +37,7 @@ def tacosandburritos_train(
         command=['curl'],
         arguments=[
             '-H "Content-Type: application/json"',
-            '-d', kubemlopsbot_payload.format(event='{{workflow.status}}'),
+            '-d', kubemlopsbot_payload.format(dsl.RUN_ID_PLACEHOLDER),
             kubemlopsbot_svc 
         ]
     )
