@@ -4,6 +4,7 @@ import kfp.dsl as dsl
 import kfp.compiler as compiler
 from kfp.azure import use_azure_secret
 import json
+import os
 
 
 @dsl.pipeline(
@@ -14,8 +15,8 @@ import json
 def get_bot_payload(event_type):
     payload = {}
     payload['event_type'] = event_type
-    payload['sha'] = 'sha'
-    payload['pr_num'] = 'pr_num'
+    payload['sha'] = os.getenv('SHA')
+    payload['pr_num'] = os.getenv('PR_NUM')
     payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
     return json.dumps(payload)
 
@@ -38,8 +39,6 @@ def tacosandburritos_train(
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
     kubemlopsbot_svc = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
-    kubemlopsbot_payload = '{"event_type": {}, "sha": "sha", \
-                            "pr_num": "pr_num", "run_id": "{{workflow.uid}}" }'
 
     exit_op = dsl.ContainerOp(
         name='Exit Handler',

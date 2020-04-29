@@ -163,7 +163,9 @@ jobs:
     - name: Build KF Pipeline
       run: python pipeline.py
       working-directory: code
-
+      env:
+        PR_NUM: ${{ github.event.issue.number }} 
+        SHA: ${{ GITHUB_SHA }}
 
     - name: Publish/Upload KF Pipeline
       env:
