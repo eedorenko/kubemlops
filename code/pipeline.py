@@ -31,7 +31,7 @@ def tacosandburritos_train(
     exit_op = dsl.ContainerOp(
          name='Exit Handler',
          image="alpine:latest",
-         command=['sh','-c']
+         command=['sh','-c'],
          arguments=['echo {{workflow.status}}']
     )
     
@@ -39,7 +39,7 @@ def tacosandburritos_train(
         operations['preprocess'] = dsl.ContainerOp(
             name='operation',
             image="alpine:latest",
-            command=['sh','-c']
+            command=['sh','-c'],
             arguments=['echo {{workflow.name}}']
             )
 
