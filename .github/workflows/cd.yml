@@ -24,7 +24,7 @@ jobs:
         inlineScript: |
           az extension add -n azure-cli-ml
           deploy.sh 
-\    # - name: Checkout
+    # - name: Checkout
     #   uses: actions/checkout@v2
     # - name: Deploy
     #   id: deploy
