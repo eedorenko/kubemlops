@@ -31,7 +31,7 @@ def tacosandburritos_train(
     kubemlopsbot_payload = '{"event_type": {event}, "sha": "sha", \
                             "pr_num": "pr_num", "run_id": "{{workflow.uid}}" }'
 
-    exit_op = = dsl.ContainerOp(
+    exit_op = dsl.ContainerOp(
         name='Exit Handler',
         image="curlimages/curl",
         command=['curl'],
