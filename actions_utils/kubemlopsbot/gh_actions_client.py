@@ -49,9 +49,10 @@ class GhActionsClient:
         assert response.status_code == 201
         print(response)
 
-    def close_check_run(self, sha, conclustion):
+    def close_check_run(self, sha, name, conclustion):
         url = self.base_url + "/check-runs"
         data = {
+            'name': f'{name}',
             'conclusion': f'{conclustion}',
             'head_sha': f'{sha}'
         }

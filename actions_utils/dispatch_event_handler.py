@@ -43,9 +43,9 @@ class DispatchEventHandler:
         if (self.sha):
             get_gh_actions_client().create_check_run(self.sha, name, title, summary, text)
 
-    def close_check_run(self, conclusion):
+    def close_check_run(self, name, conclusion):
         if (self.sha):
-            get_gh_actions_client().close_check_run(self.sha, conclusion)
+            get_gh_actions_client().close_check_run(self.sha, name, conclusion)
 
  
     def dispatch(self):
