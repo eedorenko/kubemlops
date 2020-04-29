@@ -1,6 +1,5 @@
 import os
 import requests
-from datetime import datetime
 
 
 repo = "eedorenko/kubemlops"
@@ -54,9 +53,7 @@ class GhActionsClient:
         url = self.base_url + "/check-runs"
         data = {
             'conclusion': f'{conclustion}',
-            'head_sha': f'{sha}',
-            'status': 'completed',
-            'completed_at': f'{datetime.now().isoformat()}'
+            'head_sha': f'{sha}'
         }
         print(data)    
         response = requests.post(url=url, headers=self.headers, json=data)
