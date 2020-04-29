@@ -22,9 +22,9 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          # az extension add -n azure-cli-ml
+          az extension add -n azure-cli-ml
           ls -ltr
-          ./$GITHUB_WORKSPACE/deploy.sh
+          ./$GITHUB_WORKSPACE/code/deploy/deploy.sh
           
     # - name: Checkout
     #   uses: actions/checkout@v2
