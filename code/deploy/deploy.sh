@@ -21,5 +21,5 @@ model_id=$(az ml model list --model-name $MODEL --workspace-name $WORKSPACE -g $
 echo $model_id
 pwd
 ls -ltr $GITHUB_WORKSPACE/code/deploy
-az ml model deploy -n $DEPLOYMENT_NAME -m $model_id --ic $GITHUB_WORKSPACE/code/deploy'inferenceconfig.json'  --dc $GITHUB_WORKSPACE/code/deploy'deploymentconfig.json' -w $WORKSPACE -g $RESOURCE_GROUP --overwrite -v
+az ml model deploy -n $DEPLOYMENT_NAME -m $model_id --ic $GITHUB_WORKSPACE/code/deploy/inferenceconfig.json  --dc $GITHUB_WORKSPACE/code/deploy/deploymentconfig.json -w $WORKSPACE -g $RESOURCE_GROUP --overwrite -v
 
