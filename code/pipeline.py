@@ -18,6 +18,7 @@ def get_callback_payload(event_type):
     payload['sha'] = os.getenv('GITHUB_SHA')
     payload['pr_num'] = os.getenv('PR_NUM')
     payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
+    payload['status'] = '{{workflow.status}}'
     return json.dumps(payload)
 
 def tacosandburritos_train(
@@ -39,14 +40,15 @@ def tacosandburritos_train(
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
     callback_url = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
+    train_start_event = 'Training Started'
+    train_finish_event = 'Training Finished'
 
     exit_op = dsl.ContainerOp(
         name='Exit Handler',
         image="curlimages/curl",
         command=['curl'],
         arguments=[
-            '-H "Content-Type: application/json"',
-            '-d', get_callback_payload("{{workflow.status}}"),
+            '-d', get_callback_payload(train_finish_event),
             callback_url 
         ]
     )
@@ -54,8 +56,13 @@ def tacosandburritos_train(
             
     with dsl.ExitHandler(exit_op):
         # preprocess data
+        start_callback = 
+            dsl.InitContainer('callback',
+                              'curlimages/curl',
+                              command='curl -d ' + get_callback_payload(train_start_event))
         operations['preprocess'] = dsl.ContainerOp(
             name='preprocess',
+            init_containers=[start_callback]
             image=image_repo_name + '/preprocess:latest',
             command=['python'],
             arguments=[

@@ -18,12 +18,12 @@ class RegModelEventHandler(DispatchEventHandler):
 
  
     def dispatch(self):
-        # model_params = self.get_model_params() 
-        # comment = self.MODEL_REGISTRATION_COMMENT.format(model_name=model_params['model_name'],
-        #                                           metrics=model_params['metrics'])
-        # self.add_comment(comment)
-        # self.add_label(self.MODEL_REGISTRATION_LABEL)
-        self.create_check_run("naaame", "title", "summary", "text")
+        model_params = self.get_model_params() 
+        comment = self.MODEL_REGISTRATION_COMMENT.format(model_name=model_params['model_name'],
+                                                  metrics=model_params['metrics'])
+        self.add_comment(comment)
+        self.add_label(self.MODEL_REGISTRATION_LABEL)
+        # self.create_check_run("naaame", "title", "summary", "text")
         # self.close_check_run("naaame","success")
 
 

@@ -1,13 +1,17 @@
 import argparse
 import dispatch_event_handler
 import reg_model_event_handler
+import start_train_event_handler
 
 REGISTER_MODEL_EVENT = "Model is registered"
+START_TRAIN_EVENT = "Training Started"
 
 
 def get_event_handler(event_type):
     if (event_type == REGISTER_MODEL_EVENT):
         return reg_model_event_handler.RegModelEventHandler()
+    elif (event_type == START_TRAIN_EVENT)
+        return starte_train_event_handler.RegModelEventHandler()
     else:
         return dispatch_event_handler.DispatchEventHandler()
 
