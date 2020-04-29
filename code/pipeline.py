@@ -3,12 +3,22 @@ from kubernetes import client as k8s_client
 import kfp.dsl as dsl
 import kfp.compiler as compiler
 from kfp.azure import use_azure_secret
+import json
 
 
 @dsl.pipeline(
     name='Tacos vs. Burritos',
     description='Simple TF CNN'
 )
+
+def get_bot_payload(event_type):
+    payload = {}
+    payload['event_type'] = event_type
+    payload['sha'] = 'sha'
+    payload['pr_num'] = 'pr_num'
+    payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
+    return json.dumps(payload)
+
 def tacosandburritos_train(
     resource_group,
     workspace
@@ -37,7 +47,7 @@ def tacosandburritos_train(
         command=['curl'],
         arguments=[
             '-H "Content-Type: application/json"',
-            '-d', kubemlopsbot_payload.format('{{workflow.status}}'),
+            '-d', get_bot_payload("{{workflow.status}}"),
             kubemlopsbot_svc 
         ]
     )
