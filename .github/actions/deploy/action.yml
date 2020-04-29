@@ -28,19 +28,5 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - -m
-    - aaaa${{ inputs.model_name }}
-    - -t
-    - ${{ inputs.tenant_id }}
-    - -s
-    - ${{ inputs.service_principal_id }}
-    - -p
-    - ${{ inputs.service_principal_pwd }}
-    - -u
-    - ${{ inputs.subscription_id }}
-    - -r
-    - ${{ inputs.resource_group }}
-    - -w
-    - ${{ inputs.workspace }}
-    - -x
-    - ${{ inputs.run_id }}
+    - "sh"
+    - "/scripts/deploy.sh"

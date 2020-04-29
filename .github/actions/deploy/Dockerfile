@@ -6,4 +6,4 @@ COPY inferenceconfig.json /scripts/inferenceconfig.json
 COPY deploy.sh /scripts/deploy.sh
 COPY score.py /scripts/score.py
 COPY environment.yml /scripts/environment.yml
-ENTRYPOINT ["sh", "/scripts/deploy.sh"]
+
