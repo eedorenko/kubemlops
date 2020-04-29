@@ -12,7 +12,7 @@ import os
     description='Simple TF CNN'
 )
 
-def get_bot_payload(event_type):
+def get_callback_payload(event_type):
     payload = {}
     payload['event_type'] = event_type
     payload['sha'] = os.getenv('GITHUB_SHA')
@@ -38,7 +38,7 @@ def tacosandburritos_train(
     training_dataset = 'train.txt'
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
-    kubemlopsbot_svc = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
+    callback_url = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
 
     exit_op = dsl.ContainerOp(
         name='Exit Handler',
@@ -46,104 +46,75 @@ def tacosandburritos_train(
         command=['curl'],
         arguments=[
             '-H "Content-Type: application/json"',
-            '-d', get_bot_payload("{{workflow.status}}"),
-            kubemlopsbot_svc 
+            '-d', get_callback_payload("{{workflow.status}}"),
+            callback_url 
         ]
     )
 
             
     with dsl.ExitHandler(exit_op):
+        # preprocess data
         operations['preprocess'] = dsl.ContainerOp(
-            name='operation',
-            image="alpine:latest",
-            command=['sh','-c'],
-            arguments=['echo {{workflow.name}}']
-            )
+            name='preprocess',
+            image=image_repo_name + '/preprocess:latest',
+            command=['python'],
+            arguments=[
+                '/scripts/data.py',
+                '--base_path', persistent_volume_path,
+                '--data', training_folder,
+                '--target', training_dataset,
+                '--img_size', image_size,
+                '--zipfile', data_download
+            ]
+        )
 
-    # preprocess data
+        # train
+        operations['training'] = dsl.ContainerOp(
+            name='training',
+            image=image_repo_name + '/training:latest',
+            command=['python'],
+            arguments=[
+                '/scripts/train.py',
+                '--base_path', persistent_volume_path,
+                '--data', training_folder,
+                '--epochs', epochs,
+                '--batch', batch,
+                '--image_size', image_size,
+                '--lr', learning_rate,
+                '--outputs', model_folder,
+                '--dataset', training_dataset
+            ]
+        )
+        operations['training'].after(operations['preprocess'])
 
-    # operations['preprocess'] = dsl.ContainerOp(
-    #     name='preprocess',
-    #     image=image_repo_name + '/preprocess:latest',
-    #     command=['python'],
-    #     arguments=[
-    #         '/scripts/data.py',
-    #         '--base_path', persistent_volume_path,
-    #         '--data', training_folder,
-    #         '--target', training_dataset,
-    #         '--img_size', image_size,
-    #         '--zipfile', data_download
-    #     ]
-    # )
-
-    # # train
-    # operations['training'] = dsl.ContainerOp(
-    #     name='training',
-    #     image=image_repo_name + '/training:latest',
-    #     command=['python'],
-    #     arguments=[
-    #         '/scripts/train.py',
-    #         '--base_path', persistent_volume_path,
-    #         '--data', training_folder,
-    #         '--epochs', epochs,
-    #         '--batch', batch,
-    #         '--image_size', image_size,
-    #         '--lr', learning_rate,
-    #         '--outputs', model_folder,
-    #         '--dataset', training_dataset
-    #     ]
-    # )
-    # operations['training'].after(operations['preprocess'])
-
-    # # register model
-    # operations['register'] = dsl.ContainerOp(
-    #     name='register',
-    #     image=image_repo_name + '/register:latest',
-    #     command=['python'],
-    #     arguments=[
-    #         '/scripts/register.py',
-    #         '--base_path', persistent_volume_path,
-    #         '--model', 'latest.h5',
-    #         '--model_name', model_name,
-    #         '--tenant_id', "$(AZ_TENANT_ID)",
-    #         '--service_principal_id', "$(AZ_CLIENT_ID)",
-    #         '--service_principal_password', "$(AZ_CLIENT_SECRET)",
-    #         '--subscription_id', "$(AZ_SUBSCRIPTION_ID)",
-    #         '--resource_group', resource_group,
-    #         '--workspace', workspace,
-    #         '--run_id', dsl.RUN_ID_PLACEHOLDER
-    #     ]
-    # ).apply(use_azure_secret())
-    # operations['register'].after(operations['training'])
-
-    # # register model
-    # operations['register'] = dsl.ContainerOp(
-    #     name='register',
-    #     image=image_repo_name + '/register:latest',
-    #     command=['python'],
-    #     arguments=[
-    #         '/scripts/register.py',
-    #         '--base_path', persistent_volume_path,
-    #         '--model', 'latest.h5',
-    #         '--model_name', model_name,
-    #         '--tenant_id', "$(AZ_TENANT_ID)",
-    #         '--service_principal_id', "$(AZ_CLIENT_ID)",
-    #         '--service_principal_password', "$(AZ_CLIENT_SECRET)",
-    #         '--subscription_id', "$(AZ_SUBSCRIPTION_ID)",
-    #         '--resource_group', resource_group,
-    #         '--workspace', workspace,
-    #         '--run_id', dsl.RUN_ID_PLACEHOLDER
-    #     ]
-    # ).apply(use_azure_secret())
-    # operations['register'].after(operations['training'])
+        # register model
+        operations['register'] = dsl.ContainerOp(
+            name='register',
+            image=image_repo_name + '/register:latest',
+            command=['python'],
+            arguments=[
+                '/scripts/register.py',
+                '--base_path', persistent_volume_path,
+                '--model', 'latest.h5',
+                '--model_name', model_name,
+                '--tenant_id', "$(AZ_TENANT_ID)",
+                '--service_principal_id', "$(AZ_CLIENT_ID)",
+                '--service_principal_password', "$(AZ_CLIENT_SECRET)",
+                '--subscription_id', "$(AZ_SUBSCRIPTION_ID)",
+                '--resource_group', resource_group,
+                '--workspace', workspace,
+                '--run_id', dsl.RUN_ID_PLACEHOLDER
+            ]
+        ).apply(use_azure_secret())
+        operations['register'].after(operations['training'])
     
         operations['finalize'] = dsl.ContainerOp(
             name='Finalize',
             image="curlimages/curl",
             command=['curl'],
             arguments=[
-                '-d', get_bot_payload("Model is registered"),
-                kubemlopsbot_svc 
+                '-d', get_callback_payload("Model is registered"),
+                callback_url
             ]
         )
         operations['finalize'].after(operations['preprocess'])

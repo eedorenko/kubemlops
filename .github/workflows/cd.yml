@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
+    - name: Handle Deploy Event
+      id: deh
+      run: |
+        python3 actions_utils/event_dispatcher.py "deploy"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout
       uses: actions/checkout@v2
     - name: Azure Login
@@ -22,7 +28,7 @@ jobs:
                                                   -u ${{ secrets.SUBSCRIPTION_ID }} \
                                                   -r ${{ secrets.RESOURCE_GROUP }} \
                                                   -w ${{ secrets.AML_WORKSPACE }} \
-                                                  -x 1 \
+                                                  -x ${{ steps.deh.outputs.RUN_ID }} \
                                                   -d mexicanfood
 
 
