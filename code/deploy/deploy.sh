@@ -19,7 +19,5 @@ echo $DEPLOYMENT_NAME
 az extension add -n azure-cli-ml
 model_id=$(az ml model list --model-name $MODEL --workspace-name $WORKSPACE -g $RESOURCE_GROUP --subscription-id $SUBSCRIPTION_ID --tag run_id=$RUN_ID | jq -r '.[0] | .id') 
 echo $model_id
-pwd
-ls -ltr $GITHUB_WORKSPACE/code/deploy
 az ml model deploy -n $DEPLOYMENT_NAME -m $model_id --ic $GITHUB_WORKSPACE/code/deploy/inferenceconfig.json  --dc $GITHUB_WORKSPACE/code/deploy/deploymentconfig.json -w $WORKSPACE -g $RESOURCE_GROUP --overwrite -v
 
