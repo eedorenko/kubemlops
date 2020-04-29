@@ -117,7 +117,7 @@ def tacosandburritos_train(
                 callback_url
             ]
         )
-        operations['finalize'].after(operations['preprocess'])
+        operations['finalize'].after(operations['register'])
 
 
     # operations['deploy'] = dsl.ContainerOp(
