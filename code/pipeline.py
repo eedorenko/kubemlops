@@ -37,7 +37,7 @@ def tacosandburritos_train(
         command=['curl'],
         arguments=[
             '-H "Content-Type: application/json"',
-            '-d', kubemlopsbot_payload.format(dsl.RUN_ID_PLACEHOLDER),
+            '-d', kubemlopsbot_payload.format('{{workflow.status}}'),
             kubemlopsbot_svc 
         ]
     )
