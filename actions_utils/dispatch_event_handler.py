@@ -20,16 +20,14 @@ class DispatchEventHandler:
                 self.event_client_payload = raw_payload['client_payload']
                 
                 if ('pr_num' in self.event_client_payload):
-                    self.pr_num = self.event_client_payload['pr_num']            
+                    self.pr_num = self.event_client_payload['pr_num']         
+                    print(f'::set-output name=ISSUE_NUMBER::{self.pr_num}')   
                 if ('sha' in self.event_client_payload):
-                    self.sha = self.event_client_payload['sha']            
+                    self.sha = self.event_client_payload['sha']     
+                    print(f'::set-output name=SHA::{self.sha}')       
                 if ('run_id' in self.event_client_payload):
-                    self.run_id = self.event_client_payload['run_id']            
-                
-                print(f'::set-output name=SHA::{self.sha}')
-                print(f'::set-output name=ISSUE_NUMBER::{self.pr_num}')
-                print(f'::set-output name=RUN_ID::{self.run_id}')
-
+                    self.run_id = self.event_client_payload['run_id']         
+                    print(f'::set-output name=RUN_ID::{self.run_id}')   
             else:
                 self.event_client_payload = None
 
