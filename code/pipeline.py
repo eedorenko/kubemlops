@@ -62,7 +62,7 @@ def tacosandburritos_train(
                               command='curl -d ' + get_callback_payload(train_start_event))
         operations['preprocess'] = dsl.ContainerOp(
             name='preprocess',
-            init_containers=[start_callback]
+            init_containers=[start_callback],
             image=image_repo_name + '/preprocess:latest',
             command=['python'],
             arguments=[
