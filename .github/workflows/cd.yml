@@ -8,8 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Copy Repository Contents
+      uses: actions/checkout@master
+      with:
+        ref: eedorenko/cd
     - name: Handle Deploy Event
       id: deh
       run: |
