@@ -8,26 +8,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.SERVICE_PRINCIPAL }}", "clientSecret":"${{ secrets.SERVICE_PRINCIPAL_PWD }}", "subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}", "tenantId":"${{ secrets.TENANT }}"}' 
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-          az acr login --name kubeflowyoacr
-    - name: Checkout
-      uses: actions/checkout@v2
-    # - name: Deploy
-    #   id: deploy
-    #   uses: ./.github/actions/deploy
+    # - name: Azure Login
+    #   uses: azure/login@v1
     #   with:
-    #     model_name: 'tacosandburritos'
-    #     tenant_id: ${{ secrets.TENANT }}
-    #     service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
-    #     service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
-    #     subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
-    #     resource_group:  ${{ secrets.RESOURCE_GROUP }}
-    #     workspace:  ${{ secrets.AML_WORKSPACE }}
-    #     run_id: 1
+    #     creds: '{"clientId":"${{ secrets.SERVICE_PRINCIPAL }}", "clientSecret":"${{ secrets.SERVICE_PRINCIPAL_PWD }}", "subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}", "tenantId":"${{ secrets.TENANT }}"}' 
+    # - name: Azure CLI script
+    #   uses: azure/CLI@v1
+    #   with:
+    #     inlineScript: |
+    #       az acr login --name kubeflowyoacr
+    # - name: Checkout
+    #   uses: actions/checkout@v2
+    - name: Deploy
+      id: deploy
+      uses: ./.github/actions/deploy
+      with:
+        model_name: 'tacosandburritos'
+        tenant_id: ${{ secrets.TENANT }}
+        service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
+        service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
+        subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+        resource_group:  ${{ secrets.RESOURCE_GROUP }}
+        workspace:  ${{ secrets.AML_WORKSPACE }}
+        run_id: 1
