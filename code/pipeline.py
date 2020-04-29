@@ -105,8 +105,6 @@ def tacosandburritos_train(
     #         '/scripts/deploy.sh',
     #         '-n', model_name,
     #         '-m', model_name,
-    #         '-i', '/scripts/inferenceconfig.json',
-    #         '-d', '/scripts/deploymentconfig.json',
     #         '-t', "$(AZ_TENANT_ID)",
     #         '-r', resource_group,
     #         '-w', workspace,

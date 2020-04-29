@@ -28,11 +28,19 @@ runs:
   using: 'docker'
   image: '../../../code/deploy/Dockerfile'
   args:
+    - "-m"
     - ${{ inputs.model_name }}
+    - "-t"
     - ${{ inputs.tenant_id }}
+    - "-s"
     - ${{ inputs.service_principal_id }}
+    - "-p"
     - ${{ inputs.service_principal_pwd }}
+    - "-u"
     - ${{ inputs.subscription_id }}
+    - "-r"
     - ${{ inputs.resource_group }}
+    - "-w"
     - ${{ inputs.workspace }}
+    - "-x"
     - ${{ inputs.run_id }}
