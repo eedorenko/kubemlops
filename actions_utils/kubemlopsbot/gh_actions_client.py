@@ -1,7 +1,7 @@
 import os
 import requests
 
-pat = "dd2f179afa5a7a132d2450e1ec32e20a8781b53b"
+
 repo = "eedorenko/kubemlops"
 
 
@@ -13,8 +13,8 @@ class GhActionsClient:
 
         self.base_url = f'https://api.github.com/repos/{self.owner}/{self.repo}'
         self.headers = {'authorization': f'token {self.personal_access_token}',
-                       'accept': 'application/vnd.github.everest-preview+json'}
-                    #   'accept': 'application/vnd.github.antiope-preview+json'}                
+                    #    'accept': 'application/vnd.github.everest-preview+json'}
+                         'accept': 'application/vnd.github.antiope-preview+json'}                
 
     def send_dispatch_event(self, event_type, client_payload):
         url = self.base_url + "/dispatches"        
