@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Handle Deploy Event
       id: deh
       run: |
         python3 actions_utils/event_dispatcher.py "deploy"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Checkout
-      uses: actions/checkout@v2
     - name: Azure Login
       uses: azure/login@v1
       with:
