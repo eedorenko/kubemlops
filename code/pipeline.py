@@ -52,17 +52,28 @@ def tacosandburritos_train(
             callback_url 
         ]
     )
-
             
     with dsl.ExitHandler(exit_op):
-        # preprocess data
-        start_callback = \
-            dsl.UserContainer('callback',
-                              'curlimages/curl',
-                              command='curl -d ' + get_callback_payload(train_start_event))
+        # Init containers don't work so far :(, so init operation is a workaround so far
+        # start_callback = \
+        #     dsl.UserContainer('callback',
+        #                       'curlimages/curl',
+        #                       command='curl -d ' + get_callback_payload(train_start_event))
+        
+        operations['init'] = dsl.ContainerOp(
+            name='Initialize',
+            image="curlimages/curl",
+            command=['curl'],
+            arguments=[
+                '-d', get_callback_payload(train_start_event),
+                callback_url
+            ]
+        )
+
+        # operations['finalize'].after(operations['register'])
         operations['preprocess'] = dsl.ContainerOp(
             name='preprocess',
-            init_containers=[start_callback],
+            # init_containers=[start_callback],
             image=image_repo_name + '/preprocess:latest',
             command=['python'],
             arguments=[
@@ -73,7 +84,8 @@ def tacosandburritos_train(
                 '--img_size', image_size,
                 '--zipfile', data_download
             ]
-        )
+        ).add_initContainer
+        operations['preprocess'].after(operations['init'])
 
         # # train
         # operations['training'] = dsl.ContainerOp(
