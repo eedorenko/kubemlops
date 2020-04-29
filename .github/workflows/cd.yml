@@ -18,27 +18,16 @@ jobs:
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.SERVICE_PRINCIPAL }}", "clientSecret":"${{ secrets.SERVICE_PRINCIPAL_PWD }}", "subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}", "tenantId":"${{ secrets.TENANT }}"}' 
-    - name: Azure CLI script
+    - name: Deploy
       uses: azure/CLI@v1
       with:
-        inlineScript: |
-          az extension add -n azure-cli-ml
-          ls -ltr
-          $GITHUB_WORKSPACE/code/deploy/deploy.sh
-          
-    # - name: Checkout
-    #   uses: actions/checkout@v2
-    # - name: Deploy
-    #   id: deploy
-    #   uses: ./.github/actions/deploy
-    #   with:
-    #     model_name: 'tacosandburritos'
-    #     tenant_id: ${{ secrets.TENANT }}
-    #     service_principal_id: ${{ secrets.SERVICE_PRINCIPAL }}
-    #     service_principal_pwd: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
-    #     subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
-    #     resource_group:  ${{ secrets.RESOURCE_GROUP }}
-    #     workspace:  ${{ secrets.AML_WORKSPACE }}
-    #     run_id: 1
+        inlineScript: |          
+          $GITHUB_WORKSPACE/code/deploy/deploy.sh -m tacosandburritos \
+                                                  -u ${{ secrets.SUBSCRIPTION_ID }} \
+                                                  -r ${{ secrets.RESOURCE_GROUP }} \
+                                                  -w ${{ secrets.AML_WORKSPACE }} \
+                                                  -x 1 \
+                                                  -d mexicanfood
+
 
       
