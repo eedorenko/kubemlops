@@ -57,7 +57,7 @@ def tacosandburritos_train(
     with dsl.ExitHandler(exit_op):
         # preprocess data
         start_callback = \
-            dsl.InitContainer('callback',
+            dsl.UserContainer('callback',
                               'curlimages/curl',
                               command='curl -d ' + get_callback_payload(train_start_event))
         operations['preprocess'] = dsl.ContainerOp(
