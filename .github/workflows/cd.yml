@@ -11,7 +11,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ''"clientId":"${{ secrets.SERVICE_PRINCIPAL }}", "clientSecret":"${{ secrets.SERVICE_PRINCIPAL_PWD }}", "subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}", "tenantId":"${{ secrets.TENANT }}"' 
+        creds: 'ss' 
     - name: Checkout
       uses: actions/checkout@v2
     # - name: Deploy
