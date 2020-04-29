@@ -20,22 +20,22 @@ class GhActionsClient:
         url = self.base_url + "/dispatches"        
         data = {'event_type': event_type, 'client_payload': client_payload}
         response = requests.post(url=url, headers=self.headers, json=data)
-        assert response.status_code == 204
-        print(response)
+        print(response.content)
+        assert response.status_code == 204        
 
     def add_comment(self, pr_num, comment):
         url = self.base_url + "/issues/{pr_num}/comments".format(pr_num=pr_num)        
         data = {'body': comment}
         response = requests.post(url=url, headers=self.headers, json=data)
-        assert response.status_code == 201
-        print(response)
+        print(response.content)
+        assert response.status_code == 201        
 
     def add_labels(self, pr_num, labels):
         url = self.base_url + "/issues/{pr_num}/labels".format(pr_num=pr_num)        
         data = {'labels': labels}
         response = requests.post(url=url, headers=self.headers, json=data)
         assert response.status_code == 200
-        print(response)
+        print(response.content)
 
     def create_check_run(self, sha, name, title, summary, text):
         url = self.base_url + "/check-runs"
@@ -43,11 +43,16 @@ class GhActionsClient:
             'name': f'{name}',
             'head_sha': f'{sha}',
             'status': 'in_progress',
+            'output':{
+                'title': f'{title}',
+                'summary': f'{summary}',
+                'text': f'{text}'
+            },            
         }
         print(data)    
         response = requests.post(url=url, headers=self.headers, json=data)
-        assert response.status_code == 201
-        print(response)
+        print(response.content)
+        assert response.status_code == 201        
 
     def close_check_run(self, sha, name, conclustion):
         url = self.base_url + "/check-runs"
