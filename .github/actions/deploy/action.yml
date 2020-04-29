@@ -26,7 +26,7 @@ inputs:
     required: true
 runs:
   using: 'docker'
-  image: 'kubeflowyoacr.azurecr.io/mexicanfood/deploy:latest'
+  image: './code/deploy/Dockerfile'
   args:
     - ${{ inputs.model_name }}
     - ${{ inputs.tenant_id }}
