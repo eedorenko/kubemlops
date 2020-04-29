@@ -165,7 +165,6 @@ jobs:
       working-directory: code
       env:
         PR_NUM: ${{ github.event.issue.number }} 
-        SHA: $GITHUB_SHA
 
     - name: Publish/Upload KF Pipeline
       env:
