@@ -30,15 +30,17 @@ def tacosandburritos_train(
 
     exit_op = dsl.ContainerOp(
          name='Exit Handler',
-         image="busybox",
-         command=['echo {{workflow.status}}']
+         image="alpine:latest",
+         command=['sh','-c']
+         arguments=['echo {{workflow.status}}']
     )
     
     with dsl.ExitHandler(exit_op):
         operations['preprocess'] = dsl.ContainerOp(
             name='operation',
-            image="busybox",
-            command=['echo "Hello"']
+            image="alpine:latest",
+            command=['sh','-c']
+            arguments=['echo {{workflow.name}}']
             )
 
     # preprocess data
