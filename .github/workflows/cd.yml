@@ -12,6 +12,11 @@ jobs:
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.SERVICE_PRINCIPAL }}", "clientSecret":"${{ secrets.SERVICE_PRINCIPAL_PWD }}", "subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}", "tenantId":"${{ secrets.TENANT }}"}' 
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az acr login --name kubeflowyoacr
     - name: Checkout
       uses: actions/checkout@v2
     # - name: Deploy
