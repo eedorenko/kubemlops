@@ -12,6 +12,6 @@ jobs:
     - name: Handle Repo Dispatch Payload
       id: rd
       run: |
-        python3 actions_utils/event_dispatcher.py "${{ github.event.action }}"
+        python3 actions_utils/event_dispatcher.py --event_type "${{ github.event.action }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
