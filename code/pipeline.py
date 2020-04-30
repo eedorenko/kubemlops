@@ -60,15 +60,15 @@ def tacosandburritos_train(
         #                       'curlimages/curl',
         #                       command='curl -d ' + get_callback_payload(train_start_event))
         
-        operations['init'] = dsl.ContainerOp(
-            name='Initialize',
-            image="curlimages/curl",
-            command=['curl'],
-            arguments=[
-                '-d', get_callback_payload(train_start_event),
-                callback_url
-            ]
-        )
+        # operations['init'] = dsl.ContainerOp(
+        #     name='Initialize',
+        #     image="curlimages/curl",
+        #     command=['curl'],
+        #     arguments=[
+        #         '-d', get_callback_payload(train_start_event),
+        #         callback_url
+        #     ]
+        # )
 
         # operations['finalize'].after(operations['register'])
         operations['preprocess'] = dsl.ContainerOp(
@@ -85,7 +85,7 @@ def tacosandburritos_train(
                 '--zipfile', data_download
             ]
         )
-        operations['preprocess'].after(operations['init'])
+        # operations['preprocess'].after(operations['init'])
 
         # # train
         # operations['training'] = dsl.ContainerOp(
