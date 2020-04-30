@@ -3,7 +3,7 @@ import json
 from kubemlopsbot.gh_actions_client import get_gh_actions_client
 
 
-class DispatchEventHandler:
+class BaseDispatchEventHandler:
 
     def __init__(self):
         event_payload_file = os.getenv('GITHUB_EVENT_PATH')

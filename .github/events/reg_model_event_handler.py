@@ -1,9 +1,9 @@
 import os
 import json
-from dispatch_event_handler import DispatchEventHandler
+from dispatch_event_handler import BaseDispatchEventHandler
 
 
-class RegModelEventHandler(DispatchEventHandler):
+class RegModelEventHandler(BaseDispatchEventHandler):
 
     MODEL_REGISTRATION_COMMENT = "Model **{model_name}** has been registered \
                                   at the [Model Registry ](http://microsoft.com) \

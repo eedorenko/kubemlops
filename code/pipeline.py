@@ -6,14 +6,14 @@ from kfp.azure import use_azure_secret
 import json
 import os
 
-TRAIN_START_EVENT="Training Started"
-TRAIN_FINISH_EVENT="Training Finished"
+TRAIN_START_EVENT = "Training Started"
+TRAIN_FINISH_EVENT = "Training Finished"
+
 
 @dsl.pipeline(
     name='Tacos vs. Burritos',
     description='Simple TF CNN'
 )
-
 def get_callback_payload(event_type):
     payload = {}
     payload['event_type'] = event_type
@@ -23,6 +23,7 @@ def get_callback_payload(event_type):
     if (event_type == TRAIN_FINISH_EVENT):
         payload['status'] = '{{workflow.status}}'
     return json.dumps(payload)
+
 
 def tacosandburritos_train(
     resource_group,
@@ -50,10 +51,10 @@ def tacosandburritos_train(
         command=['curl'],
         arguments=[
             '-d', get_callback_payload(TRAIN_FINISH_EVENT),
-            callback_url 
+            callback_url
         ]
     )
-            
+
     with dsl.ExitHandler(exit_op):
         start_callback = \
             dsl.UserContainer('callback',
@@ -115,7 +116,7 @@ def tacosandburritos_train(
             ]
         ).apply(use_azure_secret())
         operations['register'].after(operations['training'])
-    
+
         operations['finalize'] = dsl.ContainerOp(
             name='Finalize',
             image="curlimages/curl",
@@ -126,7 +127,6 @@ def tacosandburritos_train(
             ]
         )
         operations['finalize'].after(operations['register'])
-
 
     # operations['deploy'] = dsl.ContainerOp(
     #     name='deploy',

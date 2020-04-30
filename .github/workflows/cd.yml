@@ -14,7 +14,7 @@ jobs:
     - name: Handle Deploy Event
       id: deh
       run: |
-        python3 actions_utils/event_dispatcher.py --event_type "deploy"
+        python3 events/event_dispatcher.py --event_type "deploy"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Azure Login
@@ -26,12 +26,12 @@ jobs:
       with:
         inlineScript: |          
           cd $GITHUB_WORKSPACE/code/deploy
-          ./deploy.sh -m tacosandburritos \
+          ./deploy.sh -m ${{ secrets.MODEL_NAME }} \
                       -u ${{ secrets.SUBSCRIPTION_ID }} \
                       -r ${{ secrets.RESOURCE_GROUP }} \
                       -w ${{ secrets.AML_WORKSPACE }} \
                       -x ${{ steps.deh.outputs.RUN_ID }} \
-                      -d mexicanfood
+                      -d ${{ secrets.DEPLOYMENT_NAME }}
 
 
       

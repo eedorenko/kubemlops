@@ -1,9 +1,9 @@
 import os
 import json
-from dispatch_event_handler import DispatchEventHandler
+from dispatch_event_handler import BaseDispatchEventHandler
 
 
-class FinishEventHandler(DispatchEventHandler):
+class FinishEventHandler(BaseDispatchEventHandler):
 
     MODEL_FINISH_COMMENT = "Model training has finished"
     CHECK_RUN_NAME = "Model Training"
