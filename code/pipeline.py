@@ -50,7 +50,7 @@ def tacosandburritos_train(
         image="curlimages/curl",
         command=['curl'],
         arguments=[
-            '-d', get_callback_payload(train_finish_event),
+            '-d', get_callback_payload(TRAIN_FINISH_EVENT),
             callback_url 
         ]
     )
@@ -62,7 +62,7 @@ def tacosandburritos_train(
                               'curlimages/curl',
                               command=['curl'],
                               args=['-d',
-                                    get_callback_payload(train_start_event), callback_url]
+                                    get_callback_payload(TRAIN_START_EVENT), callback_url]
         
         # operations['init'] = dsl.ContainerOp(
         #     name='Initialize',
