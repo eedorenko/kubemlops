@@ -11,7 +11,7 @@ def get_event_handler(event_type):
     if (event_type == REGISTER_MODEL_EVENT):
         return reg_model_event_handler.RegModelEventHandler()
     elif (event_type == START_TRAIN_EVENT):
-        return starte_train_event_handler.RegModelEventHandler()
+        return start_train_event_handler.StartEventHandler()
     else:
         return dispatch_event_handler.DispatchEventHandler()
 
