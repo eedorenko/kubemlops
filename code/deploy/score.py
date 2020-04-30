@@ -10,6 +10,11 @@ import tensorflow as tf
 from azureml.core.model import Model
 
 
+
+
+
+
+
 def init():
     global model
     if Model.get_model_path('tacosandburritos'):
