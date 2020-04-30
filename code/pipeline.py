@@ -18,7 +18,6 @@ def get_callback_payload(event_type):
     payload['sha'] = os.getenv('GITHUB_SHA')
     payload['pr_num'] = os.getenv('PR_NUM')
     payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
-    payload['status'] = '{}'
     return json.dumps(payload)
 
 def tacosandburritos_train(
@@ -48,7 +47,7 @@ def tacosandburritos_train(
         image="curlimages/curl",
         command=['curl'],
         arguments=[
-            '-d', get_callback_payload(train_finish_event).format('{{workflow.status}}'),
+            '-d', get_callback_payload(train_finish_event),
             callback_url 
         ]
     )
