@@ -84,7 +84,7 @@ def tacosandburritos_train(
                 '--img_size', image_size,
                 '--zipfile', data_download
             ]
-        ).add_initContainer
+        )
         operations['preprocess'].after(operations['init'])
 
         # # train
