@@ -76,24 +76,24 @@ def tacosandburritos_train(
             ]
         )
 
-        # # train
-        # operations['training'] = dsl.ContainerOp(
-        #     name='training',
-        #     image=image_repo_name + '/training:latest',
-        #     command=['python'],
-        #     arguments=[
-        #         '/scripts/train.py',
-        #         '--base_path', persistent_volume_path,
-        #         '--data', training_folder,
-        #         '--epochs', epochs,
-        #         '--batch', batch,
-        #         '--image_size', image_size,
-        #         '--lr', learning_rate,
-        #         '--outputs', model_folder,
-        #         '--dataset', training_dataset
-        #     ]
-        # )
-        # operations['training'].after(operations['preprocess'])
+        # train
+        operations['training'] = dsl.ContainerOp(
+            name='training',
+            image=image_repo_name + '/training:latest',
+            command=['python'],
+            arguments=[
+                '/scripts/train.py',
+                '--base_path', persistent_volume_path,
+                '--data', training_folder,
+                '--epochs', epochs,
+                '--batch', batch,
+                '--image_size', image_size,
+                '--lr', learning_rate,
+                '--outputs', model_folder,
+                '--dataset', training_dataset
+            ]
+        )
+        operations['training'].after(operations['preprocess'])
 
         # # register model
         # operations['register'] = dsl.ContainerOp(
