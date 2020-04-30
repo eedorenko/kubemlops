@@ -69,7 +69,7 @@ def get_gh_actions_client():
                            os.getenv("GITHUB_TOKEN"))
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # client = GhActionsClient(repo, pat)
     #payload = {'sha': sha, 'pr_num': pr_num}
     #client.send_dispatch_event("Model is registered",{'sha': 'sha', 'pr_num': 1})
