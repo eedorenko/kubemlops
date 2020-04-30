@@ -1,7 +1,7 @@
 name: CD
 on:
   repository_dispatch:
-    types: [Model is registered1]
+    types: [Model is registered]
     
 jobs:
   deploy_to_qa:
