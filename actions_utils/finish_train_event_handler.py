@@ -9,7 +9,7 @@ class FinishEventHandler(DispatchEventHandler):
     CHECK_RUN_NAME = "Model Training"
  
     def __init__(self):
-        super()
+        super().__init__()
         if (self.event_client_payload):
             if ('status' in self.event_client_payload):
                 self.status = self.event_client_payload['status']         
