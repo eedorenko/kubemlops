@@ -8,7 +8,8 @@ jobs:
     steps:
     - name: Copy Repository Contents
       uses: actions/checkout@master
-    
+
+
     - name: Handle Repo Dispatch Payload
       id: rd
       run: |
