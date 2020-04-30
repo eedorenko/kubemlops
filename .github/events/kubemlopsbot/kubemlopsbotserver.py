@@ -5,7 +5,7 @@ from gh_actions_client import get_gh_actions_client
 
 # KubeMlOpsBot receives callback requests from the KFP pipeline and
 # sends an event to the orchestrator (GitHub in this implementation)
-# It nows how to build an event message and knows how to communicate
+# It knows how to build an event message and knows how to communicate
 # with the orchestrator. Potentially it may gather additional information
 # for the event payload. Currently it sends the payload as it comes from the KFP.
 
