@@ -12,12 +12,17 @@ import os
     description='Simple TF CNN'
 )
 
+TRAIN_START_EVENT = 'Training Started'
+TRAIN_FINISH_EVENT = 'Training Finished'
+
 def get_callback_payload(event_type):
     payload = {}
     payload['event_type'] = event_type
     payload['sha'] = os.getenv('GITHUB_SHA')
     payload['pr_num'] = os.getenv('PR_NUM')
     payload['run_id'] = dsl.RUN_ID_PLACEHOLDER
+    if (event_type == TRAIN_FINISH_EVENT):
+        payload['status'] = '{{workflow.status}}'
     return json.dumps(payload)
 
 def tacosandburritos_train(
@@ -39,8 +44,6 @@ def tacosandburritos_train(
     model_folder = 'model'
     image_repo_name = "kubeflowyoacr.azurecr.io/mexicanfood"
     callback_url = 'kubemlopsbot-svc.kubeflow.svc.cluster.local:8080'
-    train_start_event = 'Training Started'
-    train_finish_event = 'Training Finished'
 
     exit_op = dsl.ContainerOp(
         name='Exit Handler',
