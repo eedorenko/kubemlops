@@ -14,9 +14,11 @@ jobs:
     - name: Handle Deploy Event
       id: deh
       run: |
-        python3 events/event_dispatcher.py --event_type "deploy"
+        python3 event_dispatcher.py --event_type "deploy"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: .github/events
+
     - name: Azure Login
       uses: azure/login@v1
       with:
