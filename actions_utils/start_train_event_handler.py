@@ -9,7 +9,7 @@ class StartEventHandler(DispatchEventHandler):
     CHECK_RUN_NAME = "Model Training"
     CHECK_RUN_TITLE = "Model Training Pipeline"
     CHECK_RUN_SUMMARY = "In Progress"
-    CHECK_RUN_TEXT = "See details at {}".format(os.getenv("KF_DSHB")+"/_/pipeline/#/runs")     
+    CHECK_RUN_TEXT = "See details at {}".format(os.getenv("KFP_DSHB")+"/_/pipeline/#/runs")     
  
     def dispatch(self):
         self.add_comment(self.MODEL_START_COMMENT)
