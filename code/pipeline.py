@@ -6,14 +6,13 @@ from kfp.azure import use_azure_secret
 import json
 import os
 
+TRAIN_START_EVENT="Training Started"
+TRAIN_FINISH_EVENT="Training Finished"
 
 @dsl.pipeline(
     name='Tacos vs. Burritos',
     description='Simple TF CNN'
 )
-
-TRAIN_START_EVENT = 'Training Started'
-TRAIN_FINISH_EVENT = 'Training Finished'
 
 def get_callback_payload(event_type):
     payload = {}
