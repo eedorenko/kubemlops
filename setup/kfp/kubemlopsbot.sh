@@ -1,2 +1,2 @@
 export NAMESPACE='kubeflow'
-kubectl aaply -f kubemlopsbot.yml -n $NAMESPACE
+kubectl apply -f kubemlopsbot.yml -n $NAMESPACE
