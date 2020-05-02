@@ -1,11 +1,6 @@
 apiVersion: kfdef.apps.kubeflow.org/v1
 kind: KfDef
 metadata:
-  annotations:
-    kfctl.kubeflow.io/force-delete: "false"
-  clusterName: kubeflowplay-pack
-  creationTimestamp: null
-  name: kubeflow05
   namespace: kubeflow
 spec:
   applications:
@@ -204,5 +199,5 @@ spec:
     name: profiles
   repos:
   - name: manifests
-    uri: /Users/efedorenko/work/kubeflowmanifests
-  version: master
+    uri: https://github.com/kaizentm/manifests/archive/v1.0.3-kfp-0.5.0.tar.gz
+  version: v1.0.2
