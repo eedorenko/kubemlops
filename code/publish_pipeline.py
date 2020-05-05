@@ -66,6 +66,12 @@ def main():
     token = get_access_token(args.tenant, args.service_principal, args.sp_secret)  # noqa: E501
     client = kfp.Client(host=args.kfp_host, existing_token=token)
 
+
+
+
+
+
+
     pipeline_file = os.path.join(pipeline_file_path)
     try:
         # We upload a new pipline every time with a run_id in the pipeline name
