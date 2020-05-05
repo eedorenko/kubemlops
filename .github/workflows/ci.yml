@@ -24,6 +24,8 @@ jobs:
 
     runs-on: ubuntu-latest
     if: contains(github.event.comment.body, '/build-pipeline') || contains(github.event.comment.body, '/build-images') || github.event_name != 'issue_comment'       
+    outputs:
+      event_sha: ${{ env.event_sha }}
     steps:
     - uses: actions/checkout@v2
     - name: GetPRSHA
@@ -56,7 +58,7 @@ jobs:
     # TODO: branch: ${{ github.ref }} will not work in case of github.event_name == 'issue_comment'. It will refer to master     
 
     - name: EchoSHA
-      run: echo ${{ env.event_sha }}
+      run: echo ${{ needs.code_quality_checks.outputs.event_sha }}
 
     # - name: Build Preprocess Image
     #   if: github.event_name == 'push' || contains(github.event.comment.body, '/build-images')
