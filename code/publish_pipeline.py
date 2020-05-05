@@ -63,6 +63,14 @@ def main():
     pipeline_file_path = args.pipeline_file_path
     pipeline_name = "{0}-{1}".format(args.pipeline_name, args.run_id)
 
+
+
+
+
+
+
+
+
     token = get_access_token(args.tenant, args.service_principal, args.sp_secret)  # noqa: E501
     client = kfp.Client(host=args.kfp_host, existing_token=token)
 
