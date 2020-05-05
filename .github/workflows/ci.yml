@@ -37,12 +37,9 @@ jobs:
     - name: CheckSHA
       run: echo ${{ env.event_sha }}      
     - if: github.event_name == 'issue_comment' 
-      # TODO: 
-      # Perhaps it can be changed to something smarter
-      # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
       name: Checkout PR code
       run: |
-       git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
+       git fetch origin ${{ env.event_sha }}
        git checkout FETCH_HEAD
 
     - uses: TrueBrain/actions-flake8@master
@@ -60,26 +57,26 @@ jobs:
     - name: EchoSHA
       run: echo ${{ needs.code_quality_checks.outputs.event_sha }}
 
-    # - name: Build Preprocess Image
-    #   if: github.event_name == 'push' || contains(github.event.comment.body, '/build-images')
-    #   uses: ams0/acr-task-github-action@v1
-    #   with:
-    #     # Service Principal with Contributor role on the ACR
-    #     service_principal: ${{ secrets.SERVICE_PRINCIPAL }}
-    #     # Service Principal password
-    #     service_principal_password: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
-    #     # Azure Container Registry tenant
-    #     tenant: ${{ secrets.TENANT }}
-    #     # The name of the ACR, minus the .azurecr.io
-    #     registry: ${{ env.ACR_REGISTRY }}
-    #     # Repository to use
-    #     repository: ${{ env.ACR_REPOSITORY }}
-    #     branch: ${{ env.event_sha }}
-    #     tag: latest
-    #     # Docker image name
-    #     image: preprocess
-    #     # The folder in the Github repo that holds the source
-    #     folder: code/preprocess
+    - name: Build Preprocess Image
+      if: github.event_name == 'push' || contains(github.event.comment.body, '/build-images')
+      uses: ams0/acr-task-github-action@v1
+      with:
+        # Service Principal with Contributor role on the ACR
+        service_principal: ${{ secrets.SERVICE_PRINCIPAL }}
+        # Service Principal password
+        service_principal_password: ${{ secrets.SERVICE_PRINCIPAL_PWD }}
+        # Azure Container Registry tenant
+        tenant: ${{ secrets.TENANT }}
+        # The name of the ACR, minus the .azurecr.io
+        registry: ${{ env.ACR_REGISTRY }}
+        # Repository to use
+        repository: ${{ env.ACR_REPOSITORY }}
+        branch: ${{ needs.code_quality_checks.outputs.event_sha }}
+        tag: latest
+        # Docker image name
+        image: preprocess
+        # The folder in the Github repo that holds the source
+        folder: code/preprocess
     
     # - name: Build Register Image
     #   if: github.event_name == 'push' || contains(github.event.comment.body, '/build-images')    
@@ -95,7 +92,7 @@ jobs:
     #     registry: ${{ env.ACR_REGISTRY }}
     #     # Repository to use
     #     repository: ${{ env.ACR_REPOSITORY }}
-    #     branch: ${{ github.ref }}
+    #     branch: ${{ needs.code_quality_checks.outputs.event_sha }}
     #     tag: latest
     #     # Docker image name
     #     image: register
@@ -116,7 +113,7 @@ jobs:
     #     registry: ${{ env.ACR_REGISTRY }}
     #     # Repository to use
     #     repository: ${{ env.ACR_REPOSITORY }}
-    #     branch: ${{ github.ref }}
+    #     branch: ${{ needs.code_quality_checks.outputs.event_sha }}
     #     tag: latest
     #     # Docker image name
     #     image: training
@@ -133,7 +130,7 @@ jobs:
   #   - if: github.event_name == 'issue_comment' 
   #     name: Checkout PR code
   #     run: |
-  #      git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
+  #      git fetch origin ${{ needs.code_quality_checks.outputs.event_sha }}
   #      git checkout FETCH_HEAD
 
   #   # TODO
