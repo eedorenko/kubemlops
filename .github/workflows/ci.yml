@@ -26,6 +26,12 @@ jobs:
     if: contains(github.event.comment.body, '/build-pipeline') || contains(github.event.comment.body, '/build-images') || github.event_name != 'issue_comment'       
     steps:
     - uses: actions/checkout@v2
+    - name: GetPRSHA
+      if: github.event_name == 'issue_comment' 
+      run: echo "::set-env name=event_sha::+refs/pull/${{ github.event.issue.number }}/merge"
+    - name: GetREFSHA
+      if: github.event_name != 'issue_comment' 
+      run: echo "::set-env name=event_sha::${{ github.ref }}"
     - if: github.event_name == 'issue_comment' 
       # TODO: 
       # Perhaps it can be changed to something smarter
@@ -61,7 +67,7 @@ jobs:
         registry: ${{ env.ACR_REGISTRY }}
         # Repository to use
         repository: ${{ env.ACR_REPOSITORY }}
-        branch: ${{ github.ref }}
+        branch: ${{ env.event_sha }}
         tag: latest
         # Docker image name
         image: preprocess
